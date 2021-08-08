@@ -1,7 +1,8 @@
-name: scheduled-job-actions
+name: "scheduled-job-actions"
 on:
   schedule:
   - cron: "*/3 * * * *"
+
 jobs:
   git-auto-commit:
     runs-on: ubuntu-latest
