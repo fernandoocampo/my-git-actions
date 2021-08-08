@@ -1,7 +1,7 @@
 name: scheduled-job-actions
 on:
   schedule:
-  - cron: '*/5 * * * *'
+  - cron: '1 */12 * * *'
 
 jobs:
   git-auto-commit:
