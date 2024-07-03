@@ -16,3 +16,14 @@ jobs:
     - name: Show list files changed
       run: |
         git diff --name-only ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} ${{ github.event.pull_request.head.sha }}
+        git diff --name-only HEAD~2 HEAD | grep "^configs/.*/.*\.[yY][aA]*[mM][lL]$"
+    - name: Select only the files under configs
+      run: |
+        git diff --name-only ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} ${{ github.event.pull_request.head.sha }} | grep "^configs/.*/.*\.[yY][aA]*[mM][lL]$"
+    - name: Copy new files to tmp directory
+      run: |
+        mkdir check_dir
+        git diff --name-only ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} ${{ github.event.pull_request.head.sha }} | grep "^configs/.*/.*\.[yY][aA]*[mM][lL]$" | xargs cp --parents -t check_dir/
+    - name: List new files
+      run: |
+        ls check_dir/*/*
