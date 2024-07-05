@@ -13,17 +13,21 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.sha }}
         fetch-depth: 0
-    - name: Show list files changed
+    - name: Show list of updated files
       run: |
         git diff --name-only --diff-filter=d ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} ${{ github.event.pull_request.head.sha }}
-        git diff --name-only --diff-filter=d HEAD~2 HEAD | grep "^configs/.*/.*\.[yY][aA]*[mM][lL]$"
+        echo "-$(git diff --name-only --diff-filter=d ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} ${{ github.event.pull_request.head.sha }} | grep "^configs/.*/.*\.[yY][aA]*[mM][lL]$")-"
     - name: Select only the files under configs
+      id: get-files
       run: |
-        git diff --name-only --diff-filter=d ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} ${{ github.event.pull_request.head.sha }} | grep "^configs/.*/.*\.[yY][aA]*[mM][lL]$"
+        echo "list=$(git diff --name-only --diff-filter=d ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} ${{ github.event.pull_request.head.sha }} | grep "^configs/.*/.*\.[yY][aA]*[mM][lL]$")" >> "$GITHUB_OUTPUT"
     - name: Copy new files to tmp directory
+      if: ${{ steps.get-files.outputs.list != '' }}
       run: |
+        echo ${{ steps.get-files.outputs.list }}
         mkdir check_dir
-        git diff --name-only --diff-filter=d ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} ${{ github.event.pull_request.head.sha }} | grep "^configs/.*/.*\.[yY][aA]*[mM][lL]$" | xargs cp --parents -t check_dir/
+        echo ${{ steps.get-files.outputs.list }} | xargs cp --parents -t check_dir/
     - name: List new files
+      if: ${{ steps.get-files.outputs.list != '' }}
       run: |
         ls check_dir/*/*
