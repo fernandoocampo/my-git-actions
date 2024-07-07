@@ -26,7 +26,7 @@ jobs:
       run: |
         echo ${{ steps.get-files.outputs.list }}
         mkdir check_dir
-        echo ${{ steps.get-files.outputs.list }} | xargs cp --parents -t check_dir/
+        echo ${{ steps.get-files.outputs.list }} | sed "s|^|"$(pwd)"\/|" | xargs cp --parents -s -t check_dir/
     - name: List new files
       if: ${{ steps.get-files.outputs.list != '' }}
       run: |
