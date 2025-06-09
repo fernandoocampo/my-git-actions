@@ -1,5 +1,5 @@
 # my-git-actions
-testing Git actions
+testing Git actions.
 
 ## Linux Commands
 
@@ -7,4 +7,6 @@ testing Git actions
 
 ## Empty output
 
-verify empty data is not a problem
+verify empty data is not a problem.
+
+## Another paragraph
