@@ -8,3 +8,5 @@ testing Git actions.
 ## Empty output
 
 verify empty data is not a problem.
+
+## Another paragraph
